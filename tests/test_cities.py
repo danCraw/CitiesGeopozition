@@ -12,7 +12,7 @@ def city_data() -> CityIn:
 
 
 pytestmark = pytest.mark.asyncio
-base_url = 'http://0.0.0.0:8001/api/v1/cities'
+base_url = 'http://0.0.0.0:8000/api/v1/cities'
 
 
 async def test_create_without_id(city_data: CityIn):
