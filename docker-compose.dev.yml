@@ -12,7 +12,7 @@ services:
       - POSTGRES_DB=city_geo
     restart: unless-stopped
     volumes:
-      - ./postgres/city_geo_database.sql:/docker-entrypoint-initdb.d/postgres/city_geo_database.sql
+      - ./init.sql:/postgres/init.sql
 
 
   app:
