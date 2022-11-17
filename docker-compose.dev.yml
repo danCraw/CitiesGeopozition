@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   postgres:
+    build: ./postgresql/
     container_name: postgres_city_geo
     image: library/postgres
     ports:
@@ -12,7 +13,7 @@ services:
       - POSTGRES_DB=city_geo
     restart: unless-stopped
     volumes:
-      - ./init.sql:/postgres/init.sql
+      - postgres-data:/postgresql/
 
 
   app:
@@ -22,3 +23,6 @@ services:
       - 8000:8000
     command: bash -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
     restart: always
+
+volumes:
+  postgres-data:
