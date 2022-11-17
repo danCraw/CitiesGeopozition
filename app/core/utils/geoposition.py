@@ -6,9 +6,12 @@ from app.models.coordinates import Coordinates
 geolocator = Nominatim(user_agent="myapplication")
 
 
-def get_coordinates(city_name: str) -> Coordinates:
+def get_coordinates(city_name: str) -> Coordinates | None:
     location = geolocator.geocode(city_name)
-    return Coordinates(location.latitude, location.longitude)
+    if location is not None:
+        return Coordinates(location.latitude, location.longitude)
+    else:
+        return None
 
 
 def count_distance(point1: Coordinates, point2: Coordinates):

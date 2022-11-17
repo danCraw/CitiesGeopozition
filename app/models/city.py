@@ -15,7 +15,7 @@ class CityBase(BaseSchema):
     @validator("name")
     def city_is_exist(cls, v):
         coordinates = get_coordinates(v)
-        if coordinates.not_exists:
+        if coordinates is None:
             raise ValueError('Entered city not exist')
         return v
 
