@@ -3,11 +3,10 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
 
-from app.core.utils.cities import get_more_close_cities
 from app.core.config import config
+from app.core.utils.cities import get_more_close_cities
 from app.db.repositories.cities import CityRepository
 from app.models.city import CityIn, CityOut
-
 
 router = APIRouter()
 
