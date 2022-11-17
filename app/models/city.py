@@ -19,11 +19,10 @@ class CityBase(BaseSchema):
             raise ValueError('Entered city not exist')
         return v
 
-    @classmethod
-    def init_coordinates(cls):
-        coordinates = get_coordinates(cls.name)
-        cls.longitude = coordinates.longitude
-        cls.latitude = coordinates.latitude
+    def init_coordinates(self):
+        coordinates = get_coordinates(self.name)
+        self.longitude = coordinates.longitude
+        self.latitude = coordinates.latitude
 
 
 class CityIn(CityBase):
