@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres_city_geo
+    image: library/postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=city_geo
+    restart: unless-stopped
+    volumes:
+      - ./postgres/city_geo_database.sql:/docker-entrypoint-initdb.d/postgres/city_geo_database.sql
+
+
+  app:
+    build: .
+    container_name: app-service
+    ports:
+      - 8000:8000
+    command: bash -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    restart: always
