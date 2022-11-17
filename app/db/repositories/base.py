@@ -1,4 +1,5 @@
 import abc
+import logging
 from uuid import UUID, uuid4
 from typing import Dict, List, Union
 
@@ -7,8 +8,9 @@ import sqlalchemy
 from asyncpg import Record, UndefinedTableError
 
 from app.db.base import database
-from app.main import logger
 from app.models.base import BaseSchema
+
+logger = logging.getLogger("database.error")
 
 
 class BaseRepository(abc.ABC):
