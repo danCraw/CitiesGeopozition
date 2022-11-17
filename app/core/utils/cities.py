@@ -1,6 +1,6 @@
 from typing import List
 
-from app.core.geoposition import count_distance
+from app.core.utils.geoposition import count_distance
 from app.models.city import CityBase, CityOut
 from app.models.coordinates import Coordinates
 

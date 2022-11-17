@@ -3,7 +3,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
 
-from app.core.cities import get_more_close_cities
+from app.core.utils.cities import get_more_close_cities
 from app.core.config import config
 from app.db.repositories.cities import CityRepository
 from app.models.city import CityIn, CityOut
@@ -20,7 +20,7 @@ async def cities_list() -> List[CityOut]:
 
 
 @router.get("/{id}")
-async def one_city(city_id: str) -> CityOut:
+async def one_city(city_id: UUID) -> CityOut:
     city_repo: CityRepository = CityRepository()
     city = await city_repo.get(city_id)
     if city:
@@ -48,7 +48,7 @@ async def update_city(city: CityIn) -> CityOut:
 
 
 @router.delete("/{id}")
-async def delete_city(city_id: str) -> List[CityOut]:
+async def delete_city(city_id: UUID) -> List[CityOut]:
     city_repo: CityRepository = CityRepository()
     city = await city_repo.delete(city_id)
     if city:

@@ -2,7 +2,7 @@ import logging
 from typing import Callable
 
 
-def create_start_app_handler(app) -> Callable:
+def create_start_app_handler() -> Callable:
     async def start_app() -> None:
         from app.db.base import database
 
@@ -13,7 +13,7 @@ def create_start_app_handler(app) -> Callable:
     return start_app
 
 
-def create_stop_app_handler(app) -> Callable:
+def create_stop_app_handler() -> Callable:
     async def stop_app() -> None:
         from app.db.base import database
 

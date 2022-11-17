@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import validator
 
-from app.core.geoposition import get_coordinates
+from app.core.utils.geoposition import get_coordinates
 from app.models.base import BaseSchema
 
 

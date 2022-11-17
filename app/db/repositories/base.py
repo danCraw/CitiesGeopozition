@@ -7,6 +7,7 @@ import sqlalchemy
 from asyncpg import Record, UndefinedTableError
 
 from app.db.base import database
+from app.main import logger
 from app.models.base import BaseSchema
 
 
@@ -41,7 +42,11 @@ class BaseRepository(abc.ABC):
 
     async def _list(self) -> List[Record]:
         query = self._table.select()
-        return await self._db.fetch_all(query=query)
+        try:
+            return await self._db.fetch_all(query=query)
+        except UndefinedTableError as e:
+            logger.warning('Error' + str(e))
+            raise e
 
     async def list(self) -> List:
         rows = await self._list()
@@ -54,11 +59,16 @@ class BaseRepository(abc.ABC):
         try:
             await self._db.execute(query=self._table.insert(), values=dict_values)
         except UndefinedTableError as e:
+            logger.warning('Error' + str(e))
             raise e
         return self._schema_out(**dict_values)
 
     async def get(self, id: Union[int, UUID]) -> _schema_out:
-        row = await self._db.fetch_one(query=self._table.select().where(self._table.c.id == id))
+        try:
+            row = await self._db.fetch_one(query=self._table.select().where(self._table.c.id == id))
+        except UndefinedTableError as e:
+            logger.warning('Error' + str(e))
+            raise e
         if row:
             return self._schema_out(**dict(dict(row).items()))
         else:
@@ -70,13 +80,21 @@ class BaseRepository(abc.ABC):
         dict_values = self._preprocess_create(dict(values))
         row = await self.get(dict_values['id'])
         if row:
-            await self._db.execute(query=self._table.update().where(self._table.c.id == dict_values['id']),
-                                   values=dict_values)
+            try:
+                await self._db.execute(query=self._table.update().where(self._table.c.id == dict_values['id']),
+                                       values=dict_values)
+            except UndefinedTableError as e:
+                logger.warning('Error' + str(e))
+                raise e
             return self._schema_out(**dict_values)
         return row
 
-    async def delete(self, id: Union[int, str]) -> _schema_out:
+    async def delete(self, id: Union[int, UUID]) -> _schema_out:
         row = await self.get(id)
         if row:
-            await self._db.execute(query=self._table.delete().where(self._table.c.id == id))
+            try:
+                await self._db.execute(query=self._table.delete().where(self._table.c.id == id))
+            except UndefinedTableError as e:
+                logger.warning('Error' + str(e))
+                raise e
         return row
