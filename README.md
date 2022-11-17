@@ -16,3 +16,5 @@ SQLAlchemy
 Typing
 PostgreSQL
 Pytest
+
+Swager doc = http://0.0.0.0:8000/docs
